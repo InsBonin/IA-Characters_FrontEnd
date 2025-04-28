@@ -6,7 +6,6 @@ import FileItem from "./FileItem";
 const FolderCollector = () => {
     const inputRef = useRef(null);
     const [files, setFiles] = useState([]);
-    const [link, setLink] = useState("");
 
     const handleButtonClick = () => {
         inputRef.current?.click();
@@ -16,7 +15,6 @@ const FolderCollector = () => {
         const selectedFiles = Array.from(event.target.files).map(file => ({
             file,
             progress: 0,
-            path: file.webkitRelativePath || file.name // pega o caminho ou só o nome se não tiver
         }));
 
         selectedFiles.forEach((fileObj, index) => {
@@ -94,7 +92,7 @@ const FolderCollector = () => {
                     backgroundColor: "#f9fafb"
                 }}
             >
-                <p style={{ fontFamily: 'Poppins_400Regular' }}>Arraste os arquivos aqui</p>
+                <p style={{ fontFamily: 'Poppins_400Regular', fontSize: '2rem', margin: 0 }}>Arraste os arquivos aqui</p>
                 <p style={{ fontFamily: 'Poppins_400Regular' }}>Ou clique para importar</p>
                 <button
                     style={{
@@ -115,10 +113,8 @@ const FolderCollector = () => {
                     type="file"
                     style={{ display: "none" }}
                     onChange={handleFilesSelected}
-                    webkitdirectory="true"
-                    directory=""
                     multiple
-                    accept=".zip,*"
+                    accept=".zip, .rar,*"
                 />
             </div>
 
@@ -138,51 +134,20 @@ const FolderCollector = () => {
                 </div>
             )}
 
-            {/* Campo para link */}
-            <div style={{ marginBottom: "24px" }}>
-                <input
-                    type="text"
-                    placeholder="Ou insira um link"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db"
-                    }}
-                />
-                <button
-                    style={{
-                        marginTop: "8px",
-                        width: "100%",
-                        backgroundColor: "#10b981",
-                        color: "white",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        border: "none",
-                        cursor: "pointer"
-                    }}
-                    onClick={() => alert(`Link enviado: ${link}`)}
-                >
-                    Upload Link
-                </button>
-            </div>
-
             {/* Botão final */}
             <button
                 style={{
                     width: "100%",
                     backgroundColor: "#2563eb",
                     color: "white",
-                    padding: "16px",
+                    padding: "20px",
                     borderRadius: "8px",
                     border: "none",
-                    fontSize: "16px",
+                    fontSize: "1.5rem",
                     fontWeight: "bold",
                     cursor: "pointer"
                 }}
-                onClick={() => alert(`Importando ${files.length} arquivos e link: ${link}`)}
+                onClick={() => alert(`Importando ${files.length} arquivos.`)}
             >
                 Importar Arquivos
             </button>

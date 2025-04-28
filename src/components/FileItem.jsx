@@ -1,4 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from "react";
+import { font } from "../theme/fonts";
 
 const FileItem = ({ name, size, path, progress, onRemove }) => {
     // função para formatar o tamanho do arquivo
@@ -13,15 +15,15 @@ const FileItem = ({ name, size, path, progress, onRemove }) => {
     return (
         <div
             style={{
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                padding: "12px",
-                marginBottom: "12px",
+                borderRadius: "12px",
+                padding: "1% 5%",
+                marginBottom: "2%",
                 backgroundColor: "#ffffff",
-                position: "relative"
+                position: "relative",
+                boxShadow: "0px 10px 25px -3px rgba(0,0,0,0.1)"
             }}
         >
-            <div style={{ marginBottom: "8px" }}>
+            <div style={{ marginBottom: "8px", fontFamily: font.regular }}>
                 <strong>{path || name}</strong>
             </div>
             <div style={{ fontSize: "14px", color: "#6b7280", marginBottom: "8px" }}>
@@ -52,16 +54,15 @@ const FileItem = ({ name, size, path, progress, onRemove }) => {
                 style={{
                     position: "absolute",
                     top: "12px",
-                    right: "12px",
+                    right: "5%",
                     background: "none",
                     border: "none",
-                    color: "#ef4444",
                     fontSize: "18px",
                     cursor: "pointer"
                 }}
                 title="Remover arquivo"
             >
-                ×
+                <Ionicons style={{ color: "#ef4444" }} name="trash-outline" size={30} />
             </button>
         </div>
     );
