@@ -101,6 +101,7 @@ const PixelCollector = ({ characterName, imageUrl }) => {
             value={currentName}
             onChangeText={setCurrentName}
             placeholder="Ex: Olhos"
+            placeholderTextColor="#aaa"
             style={styles.input}
           />
           <Button title="Salvar Atributo" onPress={handleSaveAttribute} />
