@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
-const PixelCollector = ({ characterName, imageUrl }) => {
+const PixelCollector = ({ apiEndpoint }) => {
+  const [images, setImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [liveColor, setLiveColor] = useState('rgb(255, 255, 255)');
   const [savedColor, setSavedColor] = useState(null);
@@ -11,20 +13,39 @@ const PixelCollector = ({ characterName, imageUrl }) => {
 
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
+  const carouselRef = useRef(null);
 
+  // Carrega imagens da API
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await apiEndpoint();
+        setImages(data.sucesso.darwin); // Supondo que o array de imagens esteja em `data.sucesso.darwin`
+      } catch (err) {
+        console.error('Erro ao buscar dados:', err);
+      }
+    };
+
+    getData();
+  }, []);
+
+  // Atualiza o canvas quando a imagem muda
+  useEffect(() => {
+    if (!images[currentIndex]) return;
+
     const img = imageRef.current;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
     img.crossOrigin = 'Anonymous';
-
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0, img.width, img.height);
     };
-  }, []);
+
+    img.src = images[currentIndex];
+  }, [images, currentIndex]);
 
   const handleMouseMove = (e) => {
     const rect = e.target.getBoundingClientRect();
@@ -55,33 +76,50 @@ const PixelCollector = ({ characterName, imageUrl }) => {
     }
   };
 
+  const goToPreviousImage = () => {
+    const newIndex = Math.max(currentIndex - 1, 0);
+    carouselRef.current?.scrollTo({ index: newIndex });
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNextImage = () => {
+    const newIndex = Math.min(currentIndex + 1, images.length - 1);
+    carouselRef.current?.scrollTo({ index: newIndex });
+    setCurrentIndex(newIndex);
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>
-        {/* Lado da imagem */}
+        {/* Carrossel de Imagens */}
         <View style={styles.imageWrapper}>
           <canvas ref={canvasRef} style={styles.hiddenCanvas} />
-          <img
-            ref={imageRef}
-            src={imageUrl}
-            alt="Imagem"
-            style={styles.image}
-            onMouseMove={handleMouseMove}
-            onClick={handleClick}
+          {images.length > 0 && (
+            <img
+              ref={imageRef}
+              alt="Imagem"
+              style={styles.image}
+              onMouseMove={handleMouseMove}
+              onClick={handleClick}
+            />
+          )}
+        </View>
+
+        {/* Navegação entre as imagens */}
+        <View style={styles.navButtons}>
+          <Button
+            title="Anterior"
+            onPress={goToPreviousImage}
+            disabled={currentIndex === 0}
           />
-          <View
-            style={[
-              styles.cursor,
-              {
-                left: cursorPosition.x - 25,
-                top: cursorPosition.y - 25,
-                backgroundColor: liveColor,
-              },
-            ]}
+          <Button
+            title="Próxima"
+            onPress={goToNextImage}
+            disabled={currentIndex === images.length - 1}
           />
         </View>
 
-        {/* Lado direito - cor selecionada */}
+        {/* Lado direito - Cor e Atributos */}
         <View style={styles.colorBox}>
           <Text style={styles.title}>Colors</Text>
           <View style={styles.colorInfo}>
@@ -95,7 +133,6 @@ const PixelCollector = ({ characterName, imageUrl }) => {
             </View>
           )}
 
-          {/* Inputs e botão */}
           <Text style={styles.subTitle}>Nome do Atributo:</Text>
           <TextInput
             value={currentName}
@@ -138,6 +175,10 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 10,
     overflow: 'hidden',
+    backgroundColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
   },
   image: {
     width: '100%',
@@ -148,15 +189,15 @@ const styles = StyleSheet.create({
   hiddenCanvas: {
     display: 'none',
   },
-  cursor: {
+  navButtons: {
     position: 'absolute',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: '#000',
-    opacity: 0.7,
-    pointerEvents: 'none',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    gap: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   colorBox: {
     backgroundColor: '#f2f2f2',
