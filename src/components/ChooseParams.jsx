@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
         color: '#aaa'
     },
     inputContainer: {
-        marginTop: '10%'
+        marginTop: '5%',
+        width: '30%'
     },
     label: {
         fontFamily: font.regular,

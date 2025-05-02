@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import api from '../services/api';
 import { font } from '../theme/fonts';
 
@@ -199,97 +199,108 @@ const PixelCollector = () => {
   });
 
   return (
-    <View style={styles.container}>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-      {images.length > 0 && (
-        <img
-          ref={imageRef}
-          alt="Imagem"
-          style={{ width: 400, height: 300 }}
-          onMouseMove={handleMouseMove}
-          onClick={handleClick}
-        />
-      )}
-
-      <View style={styles.navButtons}>
-        <Button
-          title="<<"
-          onPress={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
-          disabled={currentIndex === 0}
-        />
-        <Button
-          title=">>"
-          onPress={() =>
-            setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1))
-          }
-          disabled={currentIndex === images.length - 1}
-        />
-      </View>
-
-      <View style={styles.colorBox}>
-        {!allAttributesSent && (
-          <Text style={styles.title}>
-            Atributos do {characterList[currentCharacterIndex]}
-          </Text>
-        )}
-        <Text style={styles.label}>RGB Atual: {liveColor}</Text>
-        {savedColor && (
-          <Text style={styles.label}>RGB Salvo: {savedColor}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
+        {images.length > 0 && (
+          <img
+            ref={imageRef}
+            alt="Imagem"
+            style={{ width: 400, height: 300 }}
+            onMouseMove={handleMouseMove}
+            onClick={handleClick}
+          />
         )}
 
-        <TextInput
-          value={currentName}
-          onChangeText={setCurrentName}
-          placeholder="Nome do Atributo"
-          editable={!allAttributesSent}
-          style={styles.input}
-        />
+        <View style={styles.navButtons}>
+          <Button
+            title="<<"
+            onPress={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
+            disabled={currentIndex === 0}
+          />
+          <Button
+            title=">>"
+            onPress={() =>
+              setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1))
+            }
+            disabled={currentIndex === images.length - 1}
+          />
+        </View>
 
-        <Button
-          title="Salvar Atributo"
-          onPress={handleSaveAttribute}
-          disabled={allAttributesSent || nameAttributes.length >= 3}
-        />
+        <View style={styles.colorBox}>
+          {!allAttributesSent && (
+            <Text style={styles.title}>
+              Atributos do {characterList[currentCharacterIndex]}
+            </Text>
+          )}
+          <Text style={styles.label}>RGB Atual: {liveColor}</Text>
+          {savedColor && (
+            <Text style={styles.label}>RGB Salvo: {savedColor}</Text>
+          )}
 
-        {nameAttributes.length > 0 && (
-          <View style={styles.attributesContainer}>
-            <Text style={styles.subTitle}>Atributos Salvos:</Text>
-            {nameAttributes.map((attr, i) => (
-              <Text key={i}>
-                {attr}: {rgbAttributes[i]}
-              </Text>
-            ))}
-          </View>
-        )}
+          <TextInput
+            value={currentName}
+            onChangeText={setCurrentName}
+            placeholder="Nome do Atributo"
+            editable={!allAttributesSent}
+            style={styles.input}
+          />
+          <TouchableOpacity
+            style={[
+              styles.button,
+              (allAttributesSent || nameAttributes.length >= 3) && styles.disabledButton,
+            ]}
+            onPress={handleSaveAttribute}
+            disabled={allAttributesSent || nameAttributes.length >= 3}
+          >
+            <Text style={styles.buttonText}>Salvar Atributo</Text>
+          </TouchableOpacity>
 
-        {!allAttributesSent && nameAttributes.length === 3 && (
-          <Button title="Enviar Atributos" onPress={handleSendAttributes} />
-        )}
-
-        {allAttributesSent && !showProgress && (
-          <Button title="Gerar CSV" onPress={iniciarGeracaoCSV} />
-        )}
-
-        {showProgress && (
-          <View style={{ marginTop: 20, width: '100%' }}>
-            <Text style={{ marginBottom: 8 }}>Gerando CSV: {progress}%</Text>
-            <View style={styles.progressBar}>
-              <Animated.View
-                style={[
-                  styles.progress,
-                  {
-                    width: widthInterpolated,
-                    opacity: pulseAnim,
-                  },
-                ]}
-              />
+          {nameAttributes.length > 0 && (
+            <View style={styles.attributesContainer}>
+              <Text style={styles.subTitle}>Atributos Salvos:</Text>
+              {nameAttributes.map((attr, i) => (
+                <Text key={i}>
+                  {attr}: {rgbAttributes[i]}
+                </Text>
+              ))}
             </View>
-          </View>
-        )}
+          )}
 
-        {csvError && <Text style={{ color: 'red' }}>{csvError}</Text>}
+          {!allAttributesSent && nameAttributes.length === 3 && (
+            <TouchableOpacity style={styles.blueButton} onPress={handleSendAttributes}>
+              <Text style={styles.buttonText}>Enviar Atributos</Text>
+            </TouchableOpacity>
+          )}
+
+          {allAttributesSent && !showProgress && (
+            <TouchableOpacity style={styles.blueButton} onPress={iniciarGeracaoCSV}>
+              <Text style={styles.buttonText}>Gerar CSV</Text>
+            </TouchableOpacity>
+          )}
+
+
+          {showProgress && (
+            <View style={{ marginTop: 20, width: '100%' }}>
+              <Text style={{ marginBottom: 8 }}>Gerando CSV: {progress}%</Text>
+              <View style={styles.progressBar}>
+                <Animated.View
+                  style={[
+                    styles.progress,
+                    {
+                      width: widthInterpolated,
+                      opacity: pulseAnim,
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          )}
+
+          {csvError && <Text style={{ color: 'red' }}>{csvError}</Text>}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -362,6 +373,27 @@ const styles = StyleSheet.create({
   progress: {
     height: '100%',
     backgroundColor: '#4caf50',
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+  blueButton: {
+    backgroundColor: '#007BFF',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 16,
   },
 });
 

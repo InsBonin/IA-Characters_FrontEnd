@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        fontFamily: font.bold,
-        fontSize: '2rem'
+        fontFamily: font.regular,
+        fontSize: '1.5rem'
     }
 });
 
