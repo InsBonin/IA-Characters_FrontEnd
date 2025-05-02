@@ -7,10 +7,10 @@ import FileItem from "./FileItem";
 const CollectorZip = ({ navigation }) => {
     const inputRef = useRef(null);
     const [files, setFiles] = useState([]);
-    const isReadyToSend = files.length > 0 && files.every(file => file.progress === 100);
-    const isUploading = files.some(file => file.progress < 100);
+    const [isSending, setIsSending] = useState(false); // novo estado
     const [inputPorcentage, setInputPorcentage] = useState('');
-
+    const isUploading = files.some(file => file.progress < 100);
+    const isReadyToSend = files.length > 0 && files.every(file => file.progress === 100);
 
     const handleButtonClick = () => {
         inputRef.current?.click();
@@ -23,7 +23,7 @@ const CollectorZip = ({ navigation }) => {
         }));
 
         selectedFiles.forEach((fileObj, index) => {
-            simulateUpload(fileObj, index + files.length); // Corrige o index para o array completo
+            simulateUpload(fileObj, index + files.length);
         });
 
         setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
@@ -71,6 +71,48 @@ const CollectorZip = ({ navigation }) => {
         setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
     };
 
+    const handleSubmit = async () => {
+        if (isSending) return;
+
+        setIsSending(true);
+
+        const formData = new FormData();
+
+        if (files.length > 0) {
+            formData.append('arquivo', files[0].file);
+        } else {
+            alert('Nenhum arquivo selecionado.');
+            setIsSending(false);
+            return;
+        }
+
+        if (!inputPorcentage || isNaN(inputPorcentage)) {
+            alert('Porcentagem inválida.');
+            setIsSending(false);
+            return;
+        }
+
+        formData.append('porcentagem_teste', inputPorcentage);
+
+        try {
+            const response = await api.post('cnn/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            if (response.status === 200) {
+                alert('Arquivo enviado com sucesso!');
+                navigation.navigate('ParamsCNN');
+            } else {
+                alert('Erro ao enviar arquivo.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar arquivo:', error);
+            alert('Erro ao enviar arquivo.');
+        } finally {
+            setIsSending(false);
+        }
+    };
+
     return (
         <div style={{ padding: '10%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '2%' }}>
@@ -78,8 +120,12 @@ const CollectorZip = ({ navigation }) => {
                     <Ionicons name="folder-open-outline" size={80} />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ textAlign: "start", fontFamily: font.regular, display: 'flex', alignItems: 'center', margin: '0', fontSize: '2rem' }}>Importar arquivos</h2>
-                    <h2 style={{ textAlign: "start", fontFamily: font.regular, display: 'flex', alignItems: 'center', margin: '0', fontSize: '1rem', opacity: .5 }}>Selecione uma pasta para importar</h2>
+                    <h2 style={{ textAlign: "start", fontFamily: font.regular, margin: '0', fontSize: '2rem' }}>
+                        Importar arquivos
+                    </h2>
+                    <h2 style={{ textAlign: "start", fontFamily: font.regular, margin: '0', fontSize: '1rem', opacity: .5 }}>
+                        Selecione uma pasta para importar
+                    </h2>
                 </div>
             </div>
 
@@ -123,7 +169,6 @@ const CollectorZip = ({ navigation }) => {
                 />
             </div>
 
-            {/* Lista de arquivos */}
             {files.length > 0 && (
                 <div style={{ marginBottom: "24px" }}>
                     {files.map((fileObj, index) => (
@@ -138,6 +183,7 @@ const CollectorZip = ({ navigation }) => {
                     ))}
                 </div>
             )}
+
             <div style={{ marginBottom: "24px" }}>
                 <label htmlFor="porcentagem" style={{ display: 'block', marginBottom: '8px', fontSize: '1rem', fontFamily: font.bold }}>
                     Porcentagem para teste:
@@ -160,68 +206,30 @@ const CollectorZip = ({ navigation }) => {
                 />
             </div>
 
-            {/* Botão final */}
             <button
-                disabled={!isReadyToSend}
+                disabled={!isReadyToSend || isSending}
+                onClick={handleSubmit}
                 style={{
                     width: "100%",
-                    backgroundColor: isReadyToSend ? "#2563eb" : "#94a3b8",
+                    backgroundColor: (!isReadyToSend || isSending) ? "#94a3b8" : "#2563eb",
                     color: "white",
                     padding: "20px",
                     borderRadius: "8px",
                     border: "none",
                     fontSize: "1.5rem",
                     fontWeight: "bold",
-                    cursor: isReadyToSend ? "pointer" : "not-allowed",
-                    opacity: isReadyToSend ? 1 : 0.6,
+                    cursor: (!isReadyToSend || isSending) ? "not-allowed" : "pointer",
+                    opacity: (!isReadyToSend || isSending) ? 0.6 : 1,
                 }}
-                onClick={async () => {
-                    const formData = new FormData();
-
-                    if (files.length > 0) {
-                        formData.append('arquivo', files[0].file);
-                    } else {
-                        alert('Nenhum arquivo selecionado.');
-                        return;
-                    }
-
-                    if (!inputPorcentage || isNaN(inputPorcentage)) {
-                        alert('Porcentagem inválida.');
-                        return;
-                    }
-
-                    formData.append('porcentagem_teste', inputPorcentage);
-
-                    try {
-                        const response = await api.post('cnn/upload', formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        });
-
-                        if (response.status === 200) {
-                            alert('Arquivo enviado com sucesso!');
-                            navigation.navigate('ParamsCNN');
-                        } else {
-                            alert('Erro ao enviar arquivo.');
-                        }
-                    } catch (error) {
-                        console.error('Erro ao enviar arquivo:', error);
-                        alert('Erro ao enviar arquivo.');
-                    }
-                }}
-
             >
-                {isUploading
-                    ? 'Carregando arquivos...'
-                    : !isReadyToSend
-                        ? 'Faça upload de um arquivo'
-                        : 'Importar Arquivos'}
+                {isSending
+                    ? 'Enviando...'
+                    : isUploading
+                        ? 'Carregando arquivos...'
+                        : !isReadyToSend
+                            ? 'Faça upload de um arquivo'
+                            : 'Importar Arquivos'}
             </button>
-
-
-
-
         </div>
     );
 };

@@ -43,11 +43,11 @@ export default function HomeScreen({ navigation }) {
                 ) : (
                     <View style={styles.newCardsContainer}>
                         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ClassificarCNN')}>
-                            <Text style={styles.titleIA}>Testar o Modelo 1</Text>
+                            <Text style={styles.titleIA}>Testar o Modelo Convolucional</Text>
                             <Text style={styles.descriptionIA}>Modelo que é treinado baseado em camadas.</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('UploadImage')}>
-                            <Text style={styles.titleIA}>Testar o Modelo 2</Text>
+                            <Text style={styles.titleIA}>Testar a Extração de Pixels</Text>
                             <Text style={styles.descriptionIA}>Modelo treinado através de seleção de pixel.</Text>
                         </TouchableOpacity>
                     </View>
@@ -62,11 +62,11 @@ export default function HomeScreen({ navigation }) {
                 ) : (
                     <View style={styles.newCardsContainer}>
                         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('CollectorZip')}>
-                            <Text style={styles.titleIA}>Modelo de IA 01</Text>
+                            <Text style={styles.titleIA}>Modelo Convolucional</Text>
                             <Text style={styles.descriptionIA}>Processa imagens em camadas para reconhecer padrões.</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('FolderCollector')}>
-                            <Text style={styles.titleIA}>Modelo de IA 02</Text>
+                            <Text style={styles.titleIA}>Extração de pixels</Text>
                             <Text style={styles.descriptionIA}>Análise detalhada de cada pixel para identificar personagens.</Text>
                         </TouchableOpacity>
                     </View>
