@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName="ChooseParams">
+        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="CollectorZip" component={CollectorZip} />
             <Stack.Screen name="FolderCollector" component={FolderCollector} />

@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
+import { font } from "../theme/fonts";
 
 const FinalScreen = ({ navigation, route }) => {
     const { classe_prevista, probabilidade } = route.params;
 
     return (
         <View style={styles.container}>
-            <Text>Resultados:</Text>
-            <Text>Classe prevista: {classe_prevista}</Text>
-            <Text>Probabilidade: {(probabilidade * 100).toFixed(2)}%</Text>
+            <Text style={styles.title}>Resultados:</Text>
+            <Text style={style.title}>Classe prevista: {classe_prevista}</Text>
+            <Text style={style.title}>Probabilidade: {(probabilidade * 100).toFixed(2)}%</Text>
         </View>
     );
 };
@@ -19,6 +20,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    title: {
+        fontFamily: font.bold,
+        fontSize: '2rem'
+    }
 });
 
 export default FinalScreen;
