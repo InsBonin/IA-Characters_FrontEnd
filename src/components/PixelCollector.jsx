@@ -133,13 +133,12 @@ const PixelCollector = () => {
     try {
       setShowProgress(true);
 
-      // Dispara a geração do CSV sem bloquear
       api.get('gerar-csv').catch((err) => {
         console.error('Erro ao iniciar geração de CSV:', err);
         setCsvError('Erro ao iniciar a geração do CSV');
       });
 
-      // Inicia o ping da rota de progresso
+      // Ping
       progressIntervalRef.current = setInterval(async () => {
         try {
           const response = await api.get('progresso');
@@ -149,7 +148,6 @@ const PixelCollector = () => {
           if (newProgress >= 100) {
             clearInterval(progressIntervalRef.current);
 
-            // Aguarda 5 segundos antes de navegar
             setTimeout(() => {
               navigation.navigate('ChooseParams');
             }, 5000);

@@ -21,7 +21,7 @@ const FolderCollector = ({ navigation }) => {
         }));
 
         selectedFiles.forEach((fileObj, index) => {
-            simulateUpload(fileObj, index + files.length); // Corrige o index para o array completo
+            simulateUpload(fileObj, index + files.length);
         });
 
         setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
@@ -121,7 +121,6 @@ const FolderCollector = ({ navigation }) => {
                 />
             </div>
 
-            {/* Lista de arquivos */}
             {files.length > 0 && (
                 <div style={{ marginBottom: "24px" }}>
                     {files.map((fileObj, index) => (
@@ -137,7 +136,6 @@ const FolderCollector = ({ navigation }) => {
                 </div>
             )}
 
-            {/* Botão final */}
             <button
                 disabled={!isReadyToSend}
                 style={{
@@ -187,9 +185,6 @@ const FolderCollector = ({ navigation }) => {
                         ? 'Faça upload de um arquivo'
                         : 'Importar Arquivos'}
             </button>
-
-
-
 
         </div>
     );

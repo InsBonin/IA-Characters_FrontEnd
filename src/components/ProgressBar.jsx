@@ -8,7 +8,6 @@ const ProgressBar = ({ navigation }) => {
     const pulseAnim = useRef(new Animated.Value(1)).current;
     const intervalRef = useRef(null);
 
-    // Chama gerar-csv uma vez ao montar
     useEffect(() => {
         const iniciarGeracao = async () => {
             try {
@@ -20,7 +19,6 @@ const ProgressBar = ({ navigation }) => {
         iniciarGeracao();
     }, []);
 
-    // Faz polling na rota progresso a cada 2 segundos
     useEffect(() => {
         intervalRef.current = setInterval(async () => {
             try {
@@ -41,7 +39,6 @@ const ProgressBar = ({ navigation }) => {
         return () => clearInterval(intervalRef.current);
     }, []);
 
-    // Atualiza animação da barra
     useEffect(() => {
         Animated.timing(animatedProgress, {
             toValue: progress,
@@ -50,7 +47,7 @@ const ProgressBar = ({ navigation }) => {
         }).start();
     }, [progress]);
 
-    // Anima efeito "pulse" enquanto carrega
+    // Efeito Pulse no carregamento
     useEffect(() => {
         if (progress < 100) {
             const pulse = Animated.loop(

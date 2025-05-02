@@ -7,7 +7,7 @@ import FileItem from "./FileItem";
 const CollectorZip = ({ navigation }) => {
     const inputRef = useRef(null);
     const [files, setFiles] = useState([]);
-    const [isSending, setIsSending] = useState(false); // novo estado
+    const [isSending, setIsSending] = useState(false);
     const [inputPorcentage, setInputPorcentage] = useState('');
     const isUploading = files.some(file => file.progress < 100);
     const isReadyToSend = files.length > 0 && files.every(file => file.progress === 100);

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        flexWrap: 'wrap', // Permite que os cards se ajustem
+        flexWrap: 'wrap',
     },
     card: {
         backgroundColor: '#F3F3F3',
@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
         boxShadow: "0px 10px 25px -3px rgba(0,0,0,0.1)",
     },
     newCardsContainer: {
-        flexDirection: 'column', // Alinha os cards em uma coluna (um em cima do outro)
-        gap: 20, // Espaçamento entre os cards
+        flexDirection: 'column',
+        gap: 20,
     },
     mainTitle: {
         fontFamily: font.bold,

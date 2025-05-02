@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import api from '../services/api'; // Importando o arquivo de configuração do Axios
+import api from '../services/api';
 import { font } from "../theme/fonts";
 
 const ParamsCNN = ({ navigation }) => {
@@ -9,7 +9,7 @@ const ParamsCNN = ({ navigation }) => {
     const [epocas, setepocas] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [acuracia, setAcuracia] = useState(null); // Estado para mostrar a acurácia
+    const [acuracia, setAcuracia] = useState(null);
 
     const handleSubmit = async () => {
         if (!camadas || !neuronios || !epocas) {
@@ -22,7 +22,6 @@ const ParamsCNN = ({ navigation }) => {
         setAcuracia(null);
 
         try {
-            // Enviando os dados para a rota da API via POST
             const response = await api.post('cnn/parametros', {
                 camadas: Number(camadas),
                 neuronios: Number(neuronios),
@@ -30,9 +29,8 @@ const ParamsCNN = ({ navigation }) => {
             });
 
             const { acuracia_validacao } = response.data;
-            setAcuracia(acuracia_validacao); // Exibe a acurácia
+            setAcuracia(acuracia_validacao);
 
-            // Aguarda 5 segundos antes de navegar
             setTimeout(() => {
                 navigation.navigate('ClassificarCNN');
             }, 5000);

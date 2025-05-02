@@ -45,7 +45,7 @@ const ClassificarCNN = ({ navigation }) => {
         if (!file || progress < 100) return;
 
         const formData = new FormData();
-        formData.append('imagem', file.file); // << nome do campo conforme o Postman
+        formData.append('imagem', file.file);
 
         try {
             const response = await api.post('cnn/classificar', formData, {
@@ -55,7 +55,6 @@ const ClassificarCNN = ({ navigation }) => {
             });
 
             if (response.status === 200) {
-                // Extração correta dos dados antes de usar
                 const { classe_prevista, probabilidade } = response.data;
 
                 navigation.navigate('FinalScreen', {

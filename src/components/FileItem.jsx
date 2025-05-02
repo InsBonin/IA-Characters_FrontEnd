@@ -3,7 +3,6 @@ import React from "react";
 import { font } from "../theme/fonts";
 
 const FileItem = ({ name, size, path, progress, onRemove }) => {
-    // função para formatar o tamanho do arquivo
     const formatBytes = (bytes) => {
         if (bytes === 0) return "0 Bytes";
         const k = 1024;
@@ -30,7 +29,6 @@ const FileItem = ({ name, size, path, progress, onRemove }) => {
                 {formatBytes(size)}
             </div>
 
-            {/* Barra de progresso */}
             <div style={{
                 height: "8px",
                 backgroundColor: "#e5e7eb",
@@ -48,7 +46,6 @@ const FileItem = ({ name, size, path, progress, onRemove }) => {
                 />
             </div>
 
-            {/* Botão de remover */}
             <button
                 onClick={onRemove}
                 style={{

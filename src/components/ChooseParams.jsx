@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import api from '../services/api'; // Importando o arquivo de configuração do Axios
+import api from '../services/api';
 import { font } from "../theme/fonts";
 
 const ChooseParams = ({ navigation }) => {
@@ -9,7 +9,7 @@ const ChooseParams = ({ navigation }) => {
     const [epocas, setepocas] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [acuracia, setAcuracia] = useState(null); // Novo estado para acurácia
+    const [acuracia, setAcuracia] = useState(null);
 
     const handleSubmit = async () => {
         if (!camadas || !neuronios || !epocas) {
@@ -29,9 +29,9 @@ const ChooseParams = ({ navigation }) => {
             });
 
             const { acuracia } = response.data;
-            setAcuracia(acuracia); // Exibe a acurácia
+            setAcuracia(acuracia);
 
-            // Aguarda 5 segundos e depois navega para UploadImage
+            
             setTimeout(() => {
                 navigation.navigate('UploadImage');
             }, 5000);
