@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 // import ChooseParams from './src/components/ChooseParams.jsx';
 // import PixelCollector from './src/components/PixelCollector';
 import AppNavigator from "./src/navigation/AppNavigator";
-import api from "./src/services/api";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -16,17 +15,6 @@ export default function App() {
   });
 
   const [message, setMessage] = useState("");
-
-  const fetchData = async () => {
-    try {
-      const response = await api.get('get-url-image');
-      setMessage(response.data.message);
-      return response.data; // você pode retornar os dados se quiser usar no PixelCollector
-    } catch (err) {
-      //console.error('Erro ao conectar com a API:', err);
-      throw err;
-    }
-  };
 
   return (
     // <View style={styles.container}>

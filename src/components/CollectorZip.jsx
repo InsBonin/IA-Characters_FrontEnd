@@ -139,17 +139,17 @@ const CollectorZip = ({ navigation }) => {
                 </div>
             )}
             <div style={{ marginBottom: "24px" }}>
-                <label htmlFor="porcentagem" style={{ display: 'block', marginBottom: '8px', fontSize: '1rem' }}>
-                    Porcentagem de teste:
+                <label htmlFor="porcentagem" style={{ display: 'block', marginBottom: '8px', fontSize: '1rem', fontFamily: font.bold }}>
+                    Porcentagem para teste:
                 </label>
                 <input
                     type="number"
                     id="porcentagem"
                     value={inputPorcentage}
                     onChange={(e) => setInputPorcentage(e.target.value)}
-                    placeholder="Digite a porcentagem (ex: 20)"
+                    placeholder="Exemplo: 20"
                     style={{
-                        width: "100%",
+                        width: "98%",
                         padding: "12px",
                         fontSize: "1rem",
                         borderRadius: "8px",

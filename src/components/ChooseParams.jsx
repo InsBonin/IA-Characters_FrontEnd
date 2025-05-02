@@ -28,8 +28,8 @@ const ChooseParams = ({ navigation }) => {
                 epocas: Number(epocas),
             });
 
-            const { acuracia_validacao } = response.data;
-            setAcuracia(acuracia_validacao); // Exibe a acurácia
+            const { acuracia } = response.data;
+            setAcuracia(acuracia); // Exibe a acurácia
 
             // Aguarda 5 segundos e depois navega para UploadImage
             setTimeout(() => {
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
         borderWidth: .5,
         padding: '2%',
         borderRadius: 10,
-        borderColor: '#aaa'
+        borderColor: '#aaa',
+        width: '100%'
     },
     button: {
         marginTop: '5%',

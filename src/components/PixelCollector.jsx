@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import api from '../services/api';
+import { font } from '../theme/fonts';
 
 const PixelCollector = () => {
   const [imagesByCharacter, setImagesByCharacter] = useState({});
@@ -162,8 +163,6 @@ const PixelCollector = () => {
     }
   };
 
-
-
   useEffect(() => {
     Animated.timing(animatedProgress, {
       toValue: progress,
@@ -200,13 +199,7 @@ const PixelCollector = () => {
   });
 
   return (
-    <>
-      {!allAttributesSent && (
-        <Text style={styles.title}>
-          Personagem: {characterList[currentCharacterIndex]}
-        </Text>
-      )}
-
+    <View style={styles.container}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       {images.length > 0 && (
         <img
@@ -220,12 +213,12 @@ const PixelCollector = () => {
 
       <View style={styles.navButtons}>
         <Button
-          title="Anterior"
+          title="<<"
           onPress={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
           disabled={currentIndex === 0}
         />
         <Button
-          title="Próxima"
+          title=">>"
           onPress={() =>
             setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1))
           }
@@ -234,6 +227,11 @@ const PixelCollector = () => {
       </View>
 
       <View style={styles.colorBox}>
+        {!allAttributesSent && (
+          <Text style={styles.title}>
+            Atributos do {characterList[currentCharacterIndex]}
+          </Text>
+        )}
         <Text style={styles.label}>RGB Atual: {liveColor}</Text>
         {savedColor && (
           <Text style={styles.label}>RGB Salvo: {savedColor}</Text>
@@ -291,22 +289,29 @@ const PixelCollector = () => {
 
         {csvError && <Text style={{ color: 'red' }}>{csvError}</Text>}
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
 
+  container: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   navButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    gap: 10,
     width: '100%',
     marginVertical: 10,
   },
   colorBox: {
+    flex: 1,
     marginTop: 20,
-    padding: 16,
-    width: '100%',
+    padding: 20,
+    width: '30%',
     borderRadius: 12,
     backgroundColor: '#fff',
     elevation: 2,
@@ -316,6 +321,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#333',
+    fontFamily: font.regular
   },
   label: {
     fontWeight: 'bold',
@@ -328,6 +334,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 4,
     color: '#222',
+    fontFamily: font.regular
   },
   input: {
     borderWidth: 1,
@@ -336,7 +343,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     backgroundColor: '#fff',
-    color: '#000',
+    color: '#aaa',
+    fontFamily: font.regular
   },
   attributesContainer: {
     marginTop: 12,
