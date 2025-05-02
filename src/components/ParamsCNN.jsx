@@ -3,13 +3,13 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import api from '../services/api'; // Importando o arquivo de configuração do Axios
 import { font } from "../theme/fonts";
 
-const ChooseParams = ({ navigation }) => {
+const ParamsCNN = ({ navigation }) => {
     const [camadas, setcamadas] = useState('');
     const [neuronios, setneuronios] = useState('');
     const [epocas, setepocas] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [acuracia, setAcuracia] = useState(null); // Novo estado para acurácia
+    const [acuracia, setAcuracia] = useState(null); // Estado para mostrar a acurácia
 
     const handleSubmit = async () => {
         if (!camadas || !neuronios || !epocas) {
@@ -22,7 +22,8 @@ const ChooseParams = ({ navigation }) => {
         setAcuracia(null);
 
         try {
-            const response = await api.post('parametros', {
+            // Enviando os dados para a rota da API via POST
+            const response = await api.post('cnn/parametros', {
                 camadas: Number(camadas),
                 neuronios: Number(neuronios),
                 epocas: Number(epocas),
@@ -31,9 +32,9 @@ const ChooseParams = ({ navigation }) => {
             const { acuracia_validacao } = response.data;
             setAcuracia(acuracia_validacao); // Exibe a acurácia
 
-            // Aguarda 5 segundos e depois navega para UploadImage
+            // Aguarda 5 segundos antes de navegar
             setTimeout(() => {
-                navigation.navigate('UploadImage');
+                navigation.navigate('ClassificarCNN');
             }, 5000);
 
         } catch (error) {
@@ -164,4 +165,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ChooseParams;
+export default ParamsCNN;

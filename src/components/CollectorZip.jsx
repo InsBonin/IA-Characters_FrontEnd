@@ -4,11 +4,13 @@ import api from '../services/api';
 import { font } from "../theme/fonts";
 import FileItem from "./FileItem";
 
-const FolderCollector = ({ navigation }) => {
+const CollectorZip = ({ navigation }) => {
     const inputRef = useRef(null);
     const [files, setFiles] = useState([]);
     const isReadyToSend = files.length > 0 && files.every(file => file.progress === 100);
     const isUploading = files.some(file => file.progress < 100);
+    const [inputPorcentage, setInputPorcentage] = useState('');
+
 
     const handleButtonClick = () => {
         inputRef.current?.click();
@@ -136,6 +138,27 @@ const FolderCollector = ({ navigation }) => {
                     ))}
                 </div>
             )}
+            <div style={{ marginBottom: "24px" }}>
+                <label htmlFor="porcentagem" style={{ display: 'block', marginBottom: '8px', fontSize: '1rem' }}>
+                    Porcentagem de teste:
+                </label>
+                <input
+                    type="number"
+                    id="porcentagem"
+                    value={inputPorcentage}
+                    onChange={(e) => setInputPorcentage(e.target.value)}
+                    placeholder="Digite a porcentagem (ex: 20)"
+                    style={{
+                        width: "100%",
+                        padding: "12px",
+                        fontSize: "1rem",
+                        borderRadius: "8px",
+                        border: "1px solid #ccc",
+                    }}
+                    min="0"
+                    max="100"
+                />
+            </div>
 
             {/* Botão final */}
             <button
@@ -162,8 +185,15 @@ const FolderCollector = ({ navigation }) => {
                         return;
                     }
 
+                    if (!inputPorcentage || isNaN(inputPorcentage)) {
+                        alert('Porcentagem inválida.');
+                        return;
+                    }
+
+                    formData.append('porcentagem_teste', inputPorcentage);
+
                     try {
-                        const response = await api.post('upload', formData, {
+                        const response = await api.post('cnn/upload', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -171,7 +201,7 @@ const FolderCollector = ({ navigation }) => {
 
                         if (response.status === 200) {
                             alert('Arquivo enviado com sucesso!');
-                            navigation.navigate('PixelCollector')
+                            navigation.navigate('ParamsCNN');
                         } else {
                             alert('Erro ao enviar arquivo.');
                         }
@@ -180,6 +210,7 @@ const FolderCollector = ({ navigation }) => {
                         alert('Erro ao enviar arquivo.');
                     }
                 }}
+
             >
                 {isUploading
                     ? 'Carregando arquivos...'
@@ -195,4 +226,4 @@ const FolderCollector = ({ navigation }) => {
     );
 };
 
-export default FolderCollector;
+export default CollectorZip;

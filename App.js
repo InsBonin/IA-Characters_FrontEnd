@@ -1,8 +1,10 @@
 import { Poppins_400Regular, Poppins_500Medium, Poppins_700Bold, Poppins_800ExtraBold, useFonts } from "@expo-google-fonts/poppins";
+import { NavigationContainer } from '@react-navigation/native';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 // import ChooseParams from './src/components/ChooseParams.jsx';
-import PixelCollector from './src/components/PixelCollector';
+// import PixelCollector from './src/components/PixelCollector';
+import AppNavigator from "./src/navigation/AppNavigator";
 import api from "./src/services/api";
 
 export default function App() {
@@ -27,16 +29,18 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* <ScrollView style={{ width: '100%', margin: '0 auto' }}>
-        <FolderCollector />
-      </ScrollView> */}
-      <PixelCollector
-        apiEndpoint={fetchData}
-      />
-      {/* <ChooseParams /> */}
-
-    </View>
+    // <View style={styles.container}>
+    //   {/* <ScrollView style={{ width: '100%', margin: '0 auto' }}>
+    //     <FolderCollector />
+    //   </ScrollView> */}
+    //   {/* <PixelCollector
+    //     apiEndpoint={fetchData}
+    //   /> */}
+    //   {/* <ChooseParams /> */}
+    // </View>
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
   );
 }
 
