@@ -7,8 +7,8 @@ const FinalScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Resultados:</Text>
-            <Text style={style.title}>Classe prevista: {classe_prevista}</Text>
-            <Text style={style.title}>Probabilidade: {(probabilidade * 100).toFixed(2)}%</Text>
+            <Text style={styles.title}>Classe prevista: {classe_prevista}</Text>
+            <Text style={styles.title}>Probabilidade: {(probabilidade * 100).toFixed(2)}%</Text>
         </View>
     );
 };
