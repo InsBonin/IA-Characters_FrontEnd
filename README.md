@@ -23,7 +23,7 @@ Desenvolvido com **React Native + Expo**, voltado para organização e extraçã
 - [react-native-document-picker](https://github.com/rnmods/react-native-document-picker)
 - [react-native-fs](https://github.com/itinance/react-native-fs) - Para salvar o CSV
 - [Papaparse](https://www.papaparse.com/) - Para gerar o conteúdo do CSV
-- [Python] (https://www.python.org) - Para comunicação via api e backend das IAs
+- [Python](https://www.python.org) - Para comunicação via api e backend das IAs
 
 ## 🔄 Fluxo de Uso
 
@@ -41,7 +41,7 @@ Treinamento:
 
 ## 🔧 Como rodar o projeto
 
-Para configurar o backend confira - [Backend do Projeto] (https://github.com/joaovitorgraf/trabalho_ia.git)
+Para configurar o backend confira - [Backend do Projeto](https://github.com/joaovitorgraf/trabalho_ia.git)
 
 ```bash
 # Clone o repositório
@@ -53,5 +53,3 @@ npm install
 
 # Rode o app com o Expo
 npx expo start ou npm start
-
-
